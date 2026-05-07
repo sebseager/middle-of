@@ -36,7 +36,7 @@ npm run check
 ### Test
 
 ```bash
-npm test -- --ci --runInBand
+npm test
 ```
 
 ## Contributing

@@ -1,9 +1,15 @@
+import { vi } from "vitest";
 import {
   createCheckedTileLayer,
   latLngToTileCoords,
   probeMaxZoom,
   NO_DATA_SIZE_THRESHOLD,
 } from "../src/lib/checked-tile-layer";
+
+type FetchMock = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+) => Promise<Response>;
 
 const mockResponse = (blob: Blob): Response =>
   ({
@@ -53,9 +59,9 @@ describe("probeMaxZoom", () => {
       { type: "image/jpeg" },
     );
 
-    const fetchMock = jest.fn(() =>
+    const fetchMock = vi.fn<FetchMock>(() =>
       Promise.resolve(mockResponse(largeBlob)),
-    ) as unknown as typeof fetch;
+    );
 
     const result = await probeMaxZoom(40.7, -74.0, tileUrl, 20, 1, {
       fetchImpl: fetchMock,
@@ -73,12 +79,12 @@ describe("probeMaxZoom", () => {
     });
 
     let callCount = 0;
-    const fetchMock = jest.fn(() => {
+    const fetchMock = vi.fn<FetchMock>(() => {
       callCount++;
       // First 3 calls (z=20,19,18) return tiny, z=17 returns large
       const blob = callCount <= 3 ? tinyBlob : largeBlob;
       return Promise.resolve(mockResponse(blob));
-    }) as unknown as typeof fetch;
+    });
 
     const result = await probeMaxZoom(40.7, -74.0, tileUrl, 20, 10, {
       fetchImpl: fetchMock,
@@ -91,9 +97,9 @@ describe("probeMaxZoom", () => {
   it("returns minZoom when no zoom level has data", async () => {
     const tinyBlob = new Blob([new Uint8Array(50)], { type: "image/png" });
 
-    const fetchMock = jest.fn(() =>
+    const fetchMock = vi.fn<FetchMock>(() =>
       Promise.resolve(mockResponse(tinyBlob)),
-    ) as unknown as typeof fetch;
+    );
 
     const result = await probeMaxZoom(40.7, -74.0, tileUrl, 5, 3, {
       fetchImpl: fetchMock,
@@ -110,11 +116,11 @@ describe("probeMaxZoom", () => {
     });
 
     let callCount = 0;
-    const fetchMock = jest.fn(() => {
+    const fetchMock = vi.fn<FetchMock>(() => {
       callCount++;
       if (callCount === 1) return Promise.reject(new Error("network error"));
       return Promise.resolve(mockResponse(largeBlob));
-    }) as unknown as typeof fetch;
+    });
 
     const result = await probeMaxZoom(40.7, -74.0, tileUrl, 20, 1, {
       fetchImpl: fetchMock,
@@ -130,11 +136,11 @@ describe("probeMaxZoom", () => {
     });
 
     let callCount = 0;
-    const fetchMock = jest.fn(() => {
+    const fetchMock = vi.fn<FetchMock>(() => {
       callCount++;
       if (callCount === 1) return Promise.resolve(failedResponse());
       return Promise.resolve(mockResponse(largeBlob));
-    }) as unknown as typeof fetch;
+    });
 
     const result = await probeMaxZoom(40.7, -74.0, tileUrl, 20, 1, {
       fetchImpl: fetchMock,
@@ -148,13 +154,13 @@ describe("probeMaxZoom", () => {
       type: "image/jpeg",
     });
 
-    const fetchMock = jest.fn(() =>
+    const fetchMock = vi.fn<FetchMock>(() =>
       Promise.resolve(mockResponse(largeBlob)),
-    ) as unknown as typeof fetch;
+    );
 
     await probeMaxZoom(0, 0, tileUrl, 5, 5, { fetchImpl: fetchMock });
 
-    const calledUrl = String((fetchMock as jest.Mock).mock.calls[0][0]);
+    const calledUrl = String(fetchMock.mock.calls[0][0]);
     expect(calledUrl).toMatch(
       /^https:\/\/tiles\.example\.com\/5\/\d+\/\d+\.png$/,
     );

@@ -51,7 +51,7 @@ function GuessInput({
   return (
     <>
       <form
-        className="relative z-40 flex w-full min-w-0 items-stretch gap-4"
+        className="relative z-40 flex w-full min-w-0 items-stretch gap-3"
         onSubmit={onSubmit}
       >
         <CityDropdown

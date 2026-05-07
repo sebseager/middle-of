@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import { CITIES, cityLabel } from "../src/lib/cities";
 import ResultOverlay from "../src/lib/ResultOverlay";
 
@@ -10,7 +11,7 @@ describe("ResultOverlay", () => {
       <ResultOverlay
         status="playing"
         target={target}
-        startNewRound={jest.fn()}
+        startNewRound={vi.fn()}
       />,
     );
 
@@ -18,7 +19,7 @@ describe("ResultOverlay", () => {
   });
 
   it("shows winner state and can start a new round", () => {
-    const startNewRound = jest.fn();
+    const startNewRound = vi.fn();
 
     render(
       <ResultOverlay

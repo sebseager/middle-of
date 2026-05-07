@@ -1,9 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 import GuessInput from "../src/lib/GuessInput";
 
 describe("GuessInput", () => {
   it("submits via callback and clears input on success", () => {
-    const submitGuess = jest.fn(() => ({ accepted: true as const }));
+    const submitGuess = vi.fn(() => ({ accepted: true as const }));
 
     render(
       <GuessInput
@@ -26,7 +27,7 @@ describe("GuessInput", () => {
   });
 
   it("shows duplicate error and keeps value", () => {
-    const submitGuess = jest.fn(() => ({
+    const submitGuess = vi.fn(() => ({
       accepted: false as const,
       reason: "duplicate" as const,
     }));
@@ -54,7 +55,7 @@ describe("GuessInput", () => {
   });
 
   it("disables controls when game is not playing", () => {
-    const submitGuess = jest.fn(() => ({ accepted: true as const }));
+    const submitGuess = vi.fn(() => ({ accepted: true as const }));
 
     render(
       <GuessInput
@@ -70,7 +71,7 @@ describe("GuessInput", () => {
   });
 
   it("shows suggestions only after three characters and does not cap results", () => {
-    const submitGuess = jest.fn(() => ({ accepted: true as const }));
+    const submitGuess = vi.fn(() => ({ accepted: true as const }));
     const labels = [
       "Belfast, Northern Ireland",
       "Belgrade, Serbia",

@@ -22,7 +22,7 @@ Run these before opening a pull request:
 
 ```bash
 npm run check
-npm test -- --ci --runInBand
+npm test
 npm run build
 ```
 
