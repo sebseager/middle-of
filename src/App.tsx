@@ -351,7 +351,7 @@ function App() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-4 md:px-6">
-        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-[minmax(280px,420px)_minmax(0,1fr)]">
+        <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-[minmax(280px,420px)_minmax(0,1fr)]">
           <section className="w-full min-w-0">
             <div className="relative z-0 mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-2xl border border-stone-300 dark:border-slate-700 dark:shadow-black/35">
               <Map
