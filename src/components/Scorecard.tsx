@@ -4,7 +4,7 @@ import { cityLabel, type City } from "../lib/cities";
 interface ScorecardProps {
   open: boolean;
   stats: GameStats;
-  status: "won" | "lost";
+  status: "playing" | "won" | "lost";
   target: City;
   lastGuessCount: number | null;
   won: boolean;
@@ -44,9 +44,13 @@ function Scorecard({
           <p className="mt-3 text-center text-sm font-semibold text-emerald-700 dark:text-emerald-400">
             Correct! It was <strong>{targetLabel}</strong>.
           </p>
-        ) : (
+        ) : status === "lost" ? (
           <p className="mt-3 text-center text-sm font-semibold text-rose-700 dark:text-rose-400">
             The city was <strong>{targetLabel}</strong>.
+          </p>
+        ) : (
+          <p className="mt-3 text-center text-sm font-semibold text-slate-600 dark:text-slate-300">
+            Current performance across all rounds.
           </p>
         )}
 

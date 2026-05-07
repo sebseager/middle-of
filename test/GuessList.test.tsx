@@ -2,9 +2,10 @@ import { render, screen } from "@testing-library/react";
 import GuessList from "../src/lib/GuessList";
 
 describe("GuessList", () => {
-  it("renders six slots and inline distance content", () => {
+  it("renders inline distance content and a remaining-guesses placeholder", () => {
     render(
       <GuessList
+        status="playing"
         distanceUnit="mi"
         guesses={[
           {
@@ -28,5 +29,63 @@ describe("GuessList", () => {
     expect(screen.getByLabelText("Guess history")).toBeInTheDocument();
     expect(screen.getByText("Phoenix, Arizona (1200 mi)")).toBeInTheDocument();
     expect(screen.getByText("Tucson, Arizona")).toBeInTheDocument();
+    const placeholderLabel = screen.getByText("4 guesses to go");
+    expect(placeholderLabel).toBeInTheDocument();
+
+    const placeholderMarker = placeholderLabel.previousElementSibling;
+    expect(placeholderMarker).toBeInTheDocument();
+    expect(placeholderMarker?.nodeName.toLowerCase()).toBe("svg");
+
+    const placeholderRing = placeholderMarker?.querySelector("circle");
+    expect(placeholderRing).toBeInTheDocument();
+    expect(placeholderRing).toHaveAttribute("stroke-dasharray", "5 5");
+  });
+
+  it("shows final placeholder copy when one guess remains", () => {
+    render(
+      <GuessList
+        status="playing"
+        distanceUnit="mi"
+        guesses={[
+          {
+            input: "A",
+            correct: false,
+            milesAway: 1,
+            lat: 0,
+            lng: 0,
+          },
+          {
+            input: "B",
+            correct: false,
+            milesAway: 2,
+            lat: 0,
+            lng: 0,
+          },
+          {
+            input: "C",
+            correct: false,
+            milesAway: 3,
+            lat: 0,
+            lng: 0,
+          },
+          {
+            input: "D",
+            correct: false,
+            milesAway: 4,
+            lat: 0,
+            lng: 0,
+          },
+          {
+            input: "E",
+            correct: false,
+            milesAway: 5,
+            lat: 0,
+            lng: 0,
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText("Last guess, make it count!")).toBeInTheDocument();
   });
 });

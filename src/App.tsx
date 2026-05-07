@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Moon, Sun } from "lucide-react";
-import SegmentedPicker from "./components/SegmentedPicker";
+import { Moon, Settings, Sun } from "lucide-react";
 import ControlPillButton from "./components/ControlPillButton";
 import PillTabs from "./components/PillTabs";
 import Popup from "./components/Popup";
 import Scorecard from "./components/Scorecard";
+import SettingsModal from "./components/SettingsModal";
 import { loadStats, recordGame, type GameStats } from "./lib/stats-store";
 import GuessInput from "./lib/GuessInput";
 import GuessList from "./lib/GuessList";
@@ -142,6 +142,7 @@ function App() {
 
   const [stats, setStats] = useState<GameStats>(loadStats);
   const [showScorecard, setShowScorecard] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const prevStatusRef = useRef(game.status);
 
   const [distanceUnit, setDistanceUnit] = useState<"mi" | "km">(() => {
@@ -261,6 +262,18 @@ function App() {
     return submitResult;
   }, []);
 
+  const handleGiveUpRound = useCallback(() => {
+    window.localStorage.removeItem(ACTIVE_GAME_STORAGE_KEY);
+    setShowScorecard(false);
+    startNewRound();
+    setShowSettings(false);
+  }, [startNewRound]);
+
+  const handleViewScorecard = useCallback(() => {
+    setShowSettings(false);
+    setShowScorecard(true);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col">
       <Popup
@@ -271,6 +284,19 @@ function App() {
         cancelLabel="Stay"
         onConfirm={confirmPending}
         onCancel={cancelPending}
+      />
+
+      <SettingsModal
+        open={showSettings}
+        popFilter={popFilter}
+        popOptions={POP_OPTIONS}
+        distanceUnit={distanceUnit}
+        onPopFilterChange={handlePopFilterChange}
+        onDistanceUnitChange={setDistanceUnit}
+        canGiveUp={game.status === "playing"}
+        onGiveUp={handleGiveUpRound}
+        onViewScorecard={handleViewScorecard}
+        onClose={() => setShowSettings(false)}
       />
 
       <header className="border-b border-stone-300 bg-stone-50/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
@@ -287,23 +313,22 @@ function App() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <SegmentedPicker
-              options={POP_OPTIONS}
-              value={popFilter}
-              onChange={handlePopFilterChange}
-              size="sm"
-            />
-            <ControlPillButton
-              aria-label="Toggle distance unit"
-              onClick={() =>
-                setDistanceUnit((prev) => (prev === "mi" ? "km" : "mi"))
-              }
-              className="w-10"
+            <a
+              href="https://github.com/sebseager/middle-of-somewhere"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="View project on GitHub"
+              className="inline-flex h-8 w-8 items-center justify-center text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
             >
-              <span className="font-mono uppercase leading-none">
-                {distanceUnit}
-              </span>
-            </ControlPillButton>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-[18px] w-[18px]"
+                fill="currentColor"
+              >
+                <path d="M12 0.5C5.373 0.5 0 5.873 0 12.5c0 5.302 3.438 9.8 8.205 11.387 0.6 0.11 0.82-0.26 0.82-0.577 0-0.285-0.01-1.04-0.016-2.043-3.338 0.726-4.042-1.609-4.042-1.609-0.546-1.386-1.333-1.755-1.333-1.755-1.09-0.745 0.083-0.73 0.083-0.73 1.205 0.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492 0.997 0.108-0.775 0.418-1.304 0.762-1.604-2.665-0.303-5.467-1.333-5.467-5.933 0-1.31 0.468-2.382 1.235-3.222-0.124-0.303-0.535-1.524 0.117-3.176 0 0 1.008-0.323 3.3 1.23a11.48 11.48 0 0 1 3.004-0.404c1.018 0.005 2.043 0.138 3.004 0.404 2.29-1.553 3.296-1.23 3.296-1.23 0.654 1.652 0.243 2.873 0.12 3.176 0.77 0.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.627-5.48 5.922 0.43 0.37 0.823 1.103 0.823 2.223 0 1.606-0.015 2.902-0.015 3.296 0 0.32 0.216 0.694 0.825 0.576C20.565 22.296 24 17.8 24 12.5 24 5.873 18.627 0.5 12 0.5z" />
+              </svg>
+            </a>
             <ControlPillButton
               aria-label="Toggle light and dark mode"
               onClick={() => setDarkMode((prev) => !prev)}
@@ -314,6 +339,13 @@ function App() {
               ) : (
                 <Sun size={14} strokeWidth={2} aria-hidden="true" />
               )}
+            </ControlPillButton>
+            <ControlPillButton
+              aria-label="Open settings"
+              onClick={() => setShowSettings(true)}
+              className="w-8 gap-1.5"
+            >
+              <Settings size={14} strokeWidth={2} aria-hidden="true" />
             </ControlPillButton>
           </div>
         </div>
@@ -327,18 +359,8 @@ function App() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-4 md:px-6">
-        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-[minmax(0,1fr)_minmax(280px,420px)]">
-          <section className="order-2 mx-auto mt-2 flex w-full min-w-0 max-w-[420px] flex-col gap-4 md:order-1 md:mx-0 md:max-w-none">
-            <GuessInput
-              labels={labels}
-              status={game.status}
-              submitGuess={handleSubmitGuess}
-              roundKey={`${game.target.city}-${game.target.abbr}-${roundCounter}`}
-            />
-            <GuessList guesses={game.guesses} distanceUnit={distanceUnit} />
-          </section>
-
-          <section className="order-1 w-full min-w-0 md:order-2">
+        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-[minmax(280px,420px)_minmax(0,1fr)]">
+          <section className="w-full min-w-0">
             <div className="relative z-0 mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-2xl border border-stone-300 dark:border-slate-700 dark:shadow-black/35">
               <Map
                 target={game.target}
@@ -354,6 +376,20 @@ function App() {
               />
             </div>
           </section>
+
+          <section className="mx-auto mt-2 flex w-full min-w-0 max-w-[420px] flex-col gap-4 md:mx-0 md:max-w-none">
+            <GuessInput
+              labels={labels}
+              status={game.status}
+              submitGuess={handleSubmitGuess}
+              roundKey={`${game.target.city}-${game.target.abbr}-${roundCounter}`}
+            />
+            <GuessList
+              guesses={game.guesses}
+              status={game.status}
+              distanceUnit={distanceUnit}
+            />
+          </section>
         </div>
       </main>
 
@@ -365,7 +401,7 @@ function App() {
       <Scorecard
         open={showScorecard}
         stats={stats}
-        status={game.status === "won" ? "won" : "lost"}
+        status={game.status}
         target={game.target}
         lastGuessCount={game.status === "won" ? game.guesses.length : null}
         won={game.status === "won"}
