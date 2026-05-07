@@ -1,4 +1,4 @@
-# Middle of Nowhere
+# Middle of Somewhere
 
 [![Build Status](https://github.com/sebseager/middle-of-somewhere/actions/workflows/deploy-pages.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-somewhere/actions/workflows/deploy-pages.yml)
 [![Test Status](https://github.com/sebseager/middle-of-somewhere/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-somewhere/actions/workflows/test.yml)

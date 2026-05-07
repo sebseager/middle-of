@@ -102,7 +102,7 @@ function InlineRegionSelector<T extends string>({
   return (
     <div
       ref={rootRef}
-      className="relative z-[2000] h-9 -ml-1"
+      className="relative z-2000 h-9 -ml-1"
       style={anchorWidth ? { width: `${anchorWidth}px` } : undefined}
     >
       <LayoutGroup>
@@ -123,11 +123,26 @@ function InlineRegionSelector<T extends string>({
             >
               <motion.span
                 layoutId={labelLayoutId}
+                transition={{
+                  type: "spring",
+                  stiffness: 900,
+                  damping: 45,
+                  mass: 0.3,
+                }}
                 className="whitespace-nowrap text-base font-medium uppercase tracking-wider"
               >
                 {activeOption.label}
               </motion.span>
-              <motion.span layoutId={iconLayoutId} className="shrink-0">
+              <motion.span
+                layoutId={iconLayoutId}
+                transition={{
+                  type: "spring",
+                  stiffness: 900,
+                  damping: 45,
+                  mass: 0.3,
+                }}
+                className="shrink-0"
+              >
                 <ChevronDown size={14} strokeWidth={2.25} aria-hidden="true" />
               </motion.span>
             </motion.button>
@@ -136,7 +151,7 @@ function InlineRegionSelector<T extends string>({
               key="dropdown"
               layoutId={shellLayoutId}
               transition={shellTransition}
-              className="absolute left-0 top-0 w-[15rem] origin-top-left overflow-hidden rounded-2xl border border-stone-300 bg-white text-slate-900 shadow-2xl shadow-black/25 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+              className="absolute left-0 top-0 w-60 origin-top-left overflow-hidden rounded-2xl border border-stone-300 bg-white text-slate-900 shadow-2xl shadow-black/25 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
             >
               <button
                 type="button"
@@ -147,22 +162,18 @@ function InlineRegionSelector<T extends string>({
                 onClick={() => setOpen(false)}
                 className="flex h-9 w-full items-center justify-between gap-2 pl-4 pr-3"
               >
-                <motion.span
-                  layoutId={labelLayoutId}
-                  className="text-sm font-medium italic normal-case tracking-normal text-stone-500 dark:text-slate-400"
-                >
+                <span className="text-sm font-medium italic normal-case tracking-normal text-stone-500 dark:text-slate-400">
                   SOMEWHERE
-                </motion.span>
-                <motion.span layoutId={iconLayoutId} className="shrink-0">
+                </span>
+                <span className="shrink-0">
                   <ChevronDown
                     size={14}
                     strokeWidth={2.25}
                     aria-hidden="true"
                     className="rotate-180"
                   />
-                </motion.span>
+                </span>
               </button>
-
               <motion.ul
                 id={listboxId}
                 role="listbox"
@@ -178,7 +189,8 @@ function InlineRegionSelector<T extends string>({
 
                   return (
                     <li key={option.value}>
-                      <button
+                      <motion.button
+                        layoutId={selected ? labelLayoutId : undefined}
                         type="button"
                         role="option"
                         aria-selected={selected}
@@ -186,14 +198,15 @@ function InlineRegionSelector<T extends string>({
                           onChange(option.value);
                           setOpen(false);
                         }}
-                        className={`w-full rounded-xl px-3 py-2 text-left text-sm font-semibold uppercase tracking-wide transition ${
+                        transition={shellTransition}
+                        className={`w-full rounded-xl px-3 py-2 text-left text-sm font-semibold uppercase tracking-wide ${
                           selected
                             ? "bg-rose-600 text-white"
-                            : "text-slate-700 hover:bg-stone-100 dark:text-slate-200 dark:hover:bg-slate-700"
+                            : "text-slate-700 hover:bg-stone-100 dark:text-slate-200 dark:hover:bg-slate-700 transition"
                         }`}
                       >
                         {option.label}
-                      </button>
+                      </motion.button>
                     </li>
                   );
                 })}
