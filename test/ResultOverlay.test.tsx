@@ -14,7 +14,7 @@ describe("ResultOverlay", () => {
       />,
     );
 
-    expect(screen.queryByText("New Round")).not.toBeInTheDocument();
+    expect(screen.queryByText("Again")).not.toBeInTheDocument();
   });
 
   it("shows winner state and can start a new round", () => {
@@ -34,7 +34,7 @@ describe("ResultOverlay", () => {
           element?.textContent === `Correct! It was ${cityLabel(target)}.`,
       ),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "New Round" }));
+    fireEvent.click(screen.getByRole("button", { name: "Again" }));
     expect(startNewRound).toHaveBeenCalledTimes(1);
   });
 });

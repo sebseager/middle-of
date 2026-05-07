@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Moon, Settings, Sun } from "lucide-react";
 import ControlPillButton from "./components/ControlPillButton";
-import PillTabs from "./components/PillTabs";
+import InlineRegionSelector from "./components/InlineRegionSelector";
 import Popup from "./components/Popup";
 import Scorecard from "./components/Scorecard";
 import SettingsModal from "./components/SettingsModal";
@@ -26,8 +26,8 @@ import {
   type SubmitResult,
 } from "./lib/game-store";
 
-const REGION_TABS: { label: string; value: Region }[] = [
-  { label: "US", value: "US" },
+const REGION_OPTIONS: { label: string; value: Region }[] = [
+  { label: "U.S.", value: "US" },
   { label: "Americas", value: "Americas" },
   { label: "Europe", value: "EU" },
   { label: "Asia", value: "Asia" },
@@ -299,17 +299,16 @@ function App() {
         onClose={() => setShowSettings(false)}
       />
 
-      <header className="border-b border-stone-300 bg-stone-50/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
+      <header className="relative z-[1200] border-b border-stone-300 bg-stone-50/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
         <div className="mx-auto flex w-full items-center justify-between gap-3 px-4 py-3 md:px-6">
-          <div className="flex items-center gap-6">
+          <div className="flex min-w-0 items-center gap-2 md:gap-3">
             <h1 className="text-base tracking-wider text-slate-900 dark:text-slate-100 md:text-lg">
-              MIDDLE OF SOMEWHERE
+              MIDDLE OF
             </h1>
-            <PillTabs
-              options={REGION_TABS}
+            <InlineRegionSelector
+              options={REGION_OPTIONS}
               value={region}
               onChange={handleRegionChange}
-              className="hidden md:flex"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -349,13 +348,6 @@ function App() {
             </ControlPillButton>
           </div>
         </div>
-        {/* Mobile region tabs */}
-        <PillTabs
-          options={REGION_TABS}
-          value={region}
-          onChange={handleRegionChange}
-          className="flex justify-center px-4 pb-2 md:hidden"
-        />
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-4 md:px-6">

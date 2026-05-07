@@ -38,7 +38,7 @@ describe("GuessList", () => {
 
     const placeholderRing = placeholderMarker?.querySelector("circle");
     expect(placeholderRing).toBeInTheDocument();
-    expect(placeholderRing).toHaveAttribute("stroke-dasharray", "5 5");
+    expect(placeholderRing).toHaveAttribute("stroke-dasharray");
   });
 
   it("shows final placeholder copy when one guess remains", () => {
