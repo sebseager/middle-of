@@ -28,7 +28,7 @@ export function latLngToTileCoords(
 /**
  * Probe a tile server to find the highest zoom level that has real satellite
  * data for a given location. Works by fetching single tiles from maxZoom
- * downward and checking the response size — no-data placeholder tiles are
+ * downward and checking the response size - no-data placeholder tiles are
  * far smaller than actual imagery.
  */
 export async function probeMaxZoom(
@@ -56,7 +56,7 @@ export async function probeMaxZoom(
         }
       }
     } catch {
-      // Network/CORS error at this zoom — try a lower level.
+      // Network/CORS error at this zoom - try a lower level.
     }
   }
 

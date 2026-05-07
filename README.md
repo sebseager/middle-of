@@ -1,7 +1,7 @@
 # Middle of Nowhere
 
-[![Build Status](https://github.com/sebseager/middle-of-nowhere/actions/workflows/deploy-pages.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-nowhere/actions/workflows/deploy-pages.yml)
-[![Test Status](https://github.com/sebseager/middle-of-nowhere/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-nowhere/actions/workflows/test.yml)
+[![Build Status](https://github.com/sebseager/middle-of-somewhere/actions/workflows/deploy-pages.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-somewhere/actions/workflows/deploy-pages.yml)
+[![Test Status](https://github.com/sebseager/middle-of-somewhere/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of-somewhere/actions/workflows/test.yml)
 
 A geography guessing game built with React, TypeScript, Vite, and Leaflet.
 

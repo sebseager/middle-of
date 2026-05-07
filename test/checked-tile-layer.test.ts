@@ -62,7 +62,7 @@ describe("probeMaxZoom", () => {
     });
 
     expect(result).toBe(20);
-    // Should only fetch once — found data at maxZoom.
+    // Should only fetch once - found data at maxZoom.
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 

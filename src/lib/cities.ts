@@ -124,6 +124,6 @@ export function cityLabels(cities: City[]): string[] {
   return cities.map((city) => cityLabel(city));
 }
 
-// Legacy compat — default to world, no filter
+// Legacy compat - default to world, no filter
 export const CITIES = ALL_CITIES;
 export const CITY_LABELS: string[] = cityLabels(ALL_CITIES);

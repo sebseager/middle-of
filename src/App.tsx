@@ -277,7 +277,7 @@ function App() {
         <div className="mx-auto flex w-full items-center justify-between gap-3 px-4 py-3 md:px-6">
           <div className="flex items-center gap-6">
             <h1 className="text-base tracking-wider text-slate-900 dark:text-slate-100 md:text-lg">
-              MIDDLE OF NOWHERE
+              MIDDLE OF SOMEWHERE
             </h1>
             <PillTabs
               options={REGION_TABS}
