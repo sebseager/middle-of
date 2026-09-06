@@ -313,7 +313,7 @@ function App() {
           </div>
           <div className="flex items-center gap-2">
             <a
-              href="https://github.com/sebseager/middle-of-somewhere"
+              href="https://github.com/sebseager/middle-of"
               target="_blank"
               rel="noreferrer"
               aria-label="View project on GitHub"
