@@ -4,12 +4,11 @@
 [![Test Status](https://github.com/sebseager/middle-of/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/sebseager/middle-of/actions/workflows/test.yml)
 
 A geography guessing game built with React, TypeScript, Vite, and Leaflet.
+Play the live version here: [**middleof.app**](https://middleof.app)
 
 ![Gameplay example](.github/images/slovakia.png)
 
 ## Getting Started
-
-Play the live version here: [middleof.app](https://middleof.app)
 
 ### Install
 
